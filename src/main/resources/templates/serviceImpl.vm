@@ -1,0 +1,81 @@
+package $!{serviceImplPackageName};
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.PageHelper;
+import $!{packageName}.Page;
+import $!{beanPackageName}.$!{tableModel.beanName};
+
+import $!{servicePackageName}.$!{tableModel.beanName}Service;
+import $!{daoPackageName}.$!{tableModel.beanName}Mapper;
+import $!{packageName}.exception.GogoUpServiceException;
+import $!{packageName}.util.Util;
+
+/**
+ * 
+ * @Author stevy.builder
+ * @Create Date $!{now}
+ */
+@Service("$!{tableModel.lowerBeanName}Service")
+public class $!{tableModel.beanName}ServiceImpl implements $!{tableModel.beanName}Service {
+
+	@Autowired
+	private $!{tableModel.beanName}Mapper $!{tableModel.lowerBeanName}Mapper;
+
+	public int add$!{tableModel.beanName}($!{tableModel.beanName} $!{tableModel.lowerBeanName}){
+		if(Util.isEmpty($!{tableModel.lowerBeanName})) {
+			throw new GogoUpServiceException("$!{tableModel.beanName}为空");
+		}
+		return $!{tableModel.lowerBeanName}Mapper.insert($!{tableModel.lowerBeanName});
+	}
+	
+	public $!{tableModel.beanName} get$!{tableModel.beanName}($!{tableModel.primaryKey.beanType} $!{tableModel.primaryKey.beanName}){
+		if(Util.isEmpty($!{tableModel.primaryKey.beanName})) {
+			throw new GogoUpServiceException("$!{tableModel.beanName}主键为空");
+		}
+		return $!{tableModel.lowerBeanName}Mapper.selectOne($!{tableModel.primaryKey.beanName});
+	}
+	
+	public List<$!{tableModel.beanName}> getListAll() {
+		return $!{tableModel.lowerBeanName}Mapper.selectList();
+	}
+	
+	public List<$!{tableModel.beanName}> getListAll(Page page) {
+		PageHelper.startPage(page.getPageIndex(), page.getPageSize());
+		return $!{tableModel.lowerBeanName}Mapper.selectList();
+	}
+	
+	public List<$!{tableModel.beanName}> getList($!{tableModel.beanName} $!{tableModel.lowerBeanName}){
+		if(Util.isEmpty($!{tableModel.lowerBeanName})) {
+			throw new GogoUpServiceException("$!{tableModel.beanName}为空");
+		}
+		return $!{tableModel.lowerBeanName}Mapper.selectList($!{tableModel.lowerBeanName});
+	}
+	
+	public List<$!{tableModel.beanName}> getList($!{tableModel.beanName} $!{tableModel.lowerBeanName},Page page) {
+		if(Util.isEmpty($!{tableModel.lowerBeanName})) {
+			throw new GogoUpServiceException("$!{tableModel.beanName}为空");
+		}
+		PageHelper.startPage(page.getPageIndex(), page.getPageSize());
+		return $!{tableModel.lowerBeanName}Mapper.selectList($!{tableModel.lowerBeanName});
+	}
+	
+	public int update($!{tableModel.beanName} $!{tableModel.lowerBeanName}) {
+		if(Util.isEmpty($!{tableModel.lowerBeanName})) {
+			throw new GogoUpServiceException("$!{tableModel.beanName}为空");
+		}
+		return $!{tableModel.lowerBeanName}Mapper.update($!{tableModel.lowerBeanName});
+	}
+	
+	public int delete($!{tableModel.primaryKey.beanType} $!{tableModel.primaryKey.beanName}) {
+		if(Util.isEmpty($!{tableModel.primaryKey.beanName})) {
+			throw new GogoUpServiceException("$!{tableModel.beanName}主键为空");
+		}
+		return $!{tableModel.lowerBeanName}Mapper.delete($!{tableModel.primaryKey.beanName});
+	}
+
+
+}

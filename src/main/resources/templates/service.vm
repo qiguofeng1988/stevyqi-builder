@@ -1,0 +1,31 @@
+package $!{servicePackageName};
+
+import java.util.List;
+
+import $!{packageName}.Page;
+import $!{beanPackageName}.$!{tableModel.beanName};
+/**
+ * 
+ * @Author stevy.builder
+ * @Create Date $!{now}
+ */
+public interface $!{tableModel.beanName}Service {
+
+	public int add$!{tableModel.beanName}($!{tableModel.beanName} $!{tableModel.lowerBeanName});
+	
+	public $!{tableModel.beanName} get$!{tableModel.beanName}($!{tableModel.primaryKey.beanType} $!{tableModel.primaryKey.beanName});
+	
+	public List<$!{tableModel.beanName}> getListAll();
+	
+	public List<$!{tableModel.beanName}> getListAll(Page page);
+	
+	public List<$!{tableModel.beanName}> getList($!{tableModel.beanName} $!{tableModel.lowerBeanName});
+	
+	public List<$!{tableModel.beanName}> getList($!{tableModel.beanName} $!{tableModel.lowerBeanName},Page page);
+	
+	public int update($!{tableModel.beanName} $!{tableModel.lowerBeanName});
+	
+	public int delete($!{tableModel.primaryKey.beanType} $!{tableModel.primaryKey.beanName});
+
+
+}

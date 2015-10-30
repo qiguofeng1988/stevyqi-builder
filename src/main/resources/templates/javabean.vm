@@ -1,0 +1,25 @@
+package $!{beanPackageName};
+/**
+ * 
+ * @Author stevy.builder
+ * @Create Date $!{now}
+ */
+public class $!{tableModel.beanName} {
+
+	#foreach($field in $tableModel.fieldList)
+private $!{field.beanType} $!{field.beanName};
+	
+	#end
+
+	#foreach($field in $tableModel.fieldList)
+public String get$!{field.suffixBeanName}() {
+		return $!{field.beanName};
+	}
+
+	public void set$!{field.suffixBeanName}($!{field.beanType} $!{field.beanName}) {
+		this.$!{field.beanName} = $!{field.beanName};
+	}
+	
+	#end
+
+}

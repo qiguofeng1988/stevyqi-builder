@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="$!{packageName}.$!{daoPackageName}.$!{tableModel.beanName}Mapper" >
+  <resultMap id="BaseResultMap" type="$!{beanPackageName}.$!{tableModel.beanName}" >
+    <id column="$!{tableModel.primaryKey.columnName}" property="$!{tableModel.primaryKey.beanName}" jdbcType="$!{tableModel.primaryKey.columnType}" />
+#foreach($field in $tableModel.fieldList)
+#if($field.columnName != $tableModel.primaryKey.columnName)
+	<result column="$!{field.columnName}" property="$!{field.beanName}" jdbcType="$!{field.columnType}" />
+#end
+#end  
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+#foreach($field in $tableModel.fieldList)
+	$!{field.columnName}#if(${velocityCount} != ${tableModel.fieldList.size()}),#end
+#end
+  
+  </sql>
+  
+  <select id="selectOne" resultMap="BaseResultMap" parameterType="$!{tableModel.primaryKey.beanType}" >
+    select 
+    <include refid="Base_Column_List" />
+    from $!{tableModel.tableName}
+    where $!{tableModel.primaryKey.columnName} = #{$!{tableModel.primaryKey.beanName},jdbcType=$!{tableModel.primaryKey.columnType}}
+  </select>
+  
+  <select id="selectList" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from $!{tableModel.tableName} 
+    where 1 = 1
+#foreach($field in $tableModel.fieldList)
+#if($field.columnName != $tableModel.primaryKey.columnName)
+	  <if test="$!{field.beanName} != null" >
+        and $!{field.columnName} = #{$!{field.beanName},jdbcType=$!{field.columnType}}
+      </if>
+#end
+#end
+  </select>
+  
+  <delete id="delete" parameterType="$!{tableModel.primaryKey.beanType}" >
+    delete from $!{tableModel.tableName}
+    where $!{tableModel.primaryKey.columnName} = #{$!{tableModel.primaryKey.beanName},jdbcType=$!{tableModel.primaryKey.columnType}}
+  </delete>
+  
+  <insert id="insert" parameterType="$!{beanPackageName}.$!{tableModel.beanName}" >
+    insert into $!{tableModel.tableName}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+#foreach($field in $tableModel.fieldList)
+      <if test="$!{field.beanName} != null" >
+        $!{field.columnName},
+      </if>
+#end
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+#foreach($field in $tableModel.fieldList)
+  	  <if test="$!{field.beanName} != null" >
+        #{$!{field.beanName},jdbcType=$!{field.columnType}},
+      </if>
+#end
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="$!{beanPackageName}.$!{tableModel.beanName}" >
+    update $!{tableModel.tableName}
+    <set >
+#foreach($field in $tableModel.fieldList)
+#if($field.columnName != $tableModel.primaryKey.columnName)
+  <if test="$!{field.beanName} != null" >
+        $!{field.columnName} = #{$!{field.beanName},jdbcType=$!{field.columnType}},
+      </if>
+#end
+	#end
+    </set>
+    where $!{tableModel.primaryKey.columnName} = #{$!{tableModel.primaryKey.beanName},jdbcType=$!{tableModel.primaryKey.columnType}}
+  </update>
+</mapper>
