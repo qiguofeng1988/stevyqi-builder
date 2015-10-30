@@ -11,39 +11,27 @@
   </resultMap>
   
   <sql id="Base_Column_List" >
-#foreach($field in $tableModel.fieldList)
-	$!{field.columnName}#if(${velocityCount} != ${tableModel.fieldList.size()}),#end
+   #foreach($field in $tableModel.fieldList)
+ $!{field.columnName}#if(${velocityCount} != ${tableModel.fieldList.size()}),#end
 #end
   
   </sql>
   
-  <select id="selectOne" resultMap="BaseResultMap" parameterType="$!{tableModel.primaryKey.beanType}" >
-    select 
-    <include refid="Base_Column_List" />
-    from $!{tableModel.tableName}
-    where $!{tableModel.primaryKey.columnName} = #{$!{tableModel.primaryKey.beanName},jdbcType=$!{tableModel.primaryKey.columnType}}
-  </select>
-  
-  <select id="selectList" resultMap="BaseResultMap" >
-    select 
-    <include refid="Base_Column_List" />
-    from $!{tableModel.tableName} 
-    where 1 = 1
-#foreach($field in $tableModel.fieldList)
-#if($field.columnName != $tableModel.primaryKey.columnName)
-	  <if test="$!{field.beanName} != null" >
-        and $!{field.columnName} = #{$!{field.beanName},jdbcType=$!{field.columnType}}
-      </if>
-#end
-#end
-  </select>
-  
-  <delete id="delete" parameterType="$!{tableModel.primaryKey.beanType}" >
-    delete from $!{tableModel.tableName}
-    where $!{tableModel.primaryKey.columnName} = #{$!{tableModel.primaryKey.beanName},jdbcType=$!{tableModel.primaryKey.columnType}}
-  </delete>
-  
   <insert id="insert" parameterType="$!{beanPackageName}.$!{tableModel.beanName}" >
+    insert into $!{tableModel.tableName}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+#foreach($field in $tableModel.fieldList)
+      $!{field.columnName},
+#end
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+#foreach($field in $tableModel.fieldList)
+      #{$!{field.beanName},jdbcType=$!{field.columnType}},
+#end
+    </trim>
+  </insert>
+  
+  <insert id="insertSelective" parameterType="$!{beanPackageName}.$!{tableModel.beanName}" >
     insert into $!{tableModel.tableName}
     <trim prefix="(" suffix=")" suffixOverrides="," >
 #foreach($field in $tableModel.fieldList)
@@ -61,17 +49,56 @@
     </trim>
   </insert>
   
+  <delete id="delete" parameterType="$!{tableModel.primaryKey.beanType}" >
+    delete from $!{tableModel.tableName}
+    where $!{tableModel.primaryKey.columnName} = #{$!{tableModel.primaryKey.beanName},jdbcType=$!{tableModel.primaryKey.columnType}}
+  </delete>
+  
   <update id="update" parameterType="$!{beanPackageName}.$!{tableModel.beanName}" >
     update $!{tableModel.tableName}
-    <set >
+      <set >
 #foreach($field in $tableModel.fieldList)
 #if($field.columnName != $tableModel.primaryKey.columnName)
-  <if test="$!{field.beanName} != null" >
         $!{field.columnName} = #{$!{field.beanName},jdbcType=$!{field.columnType}},
-      </if>
 #end
-	#end
-    </set>
+#end
+      </set>
     where $!{tableModel.primaryKey.columnName} = #{$!{tableModel.primaryKey.beanName},jdbcType=$!{tableModel.primaryKey.columnType}}
   </update>
+  
+  <update id="updateSelective" parameterType="$!{beanPackageName}.$!{tableModel.beanName}" >
+    update $!{tableModel.tableName}
+      <set >
+#foreach($field in $tableModel.fieldList)
+#if($field.columnName != $tableModel.primaryKey.columnName)
+        <if test="$!{field.beanName} != null" >
+          $!{field.columnName} = #{$!{field.beanName},jdbcType=$!{field.columnType}},
+        </if>
+#end
+#end
+      </set>
+    where $!{tableModel.primaryKey.columnName} = #{$!{tableModel.primaryKey.beanName},jdbcType=$!{tableModel.primaryKey.columnType}}
+  </update>
+  
+  <select id="selectOne" resultMap="BaseResultMap" parameterType="$!{tableModel.primaryKey.beanType}" >
+    select 
+    <include refid="Base_Column_List" />
+    from $!{tableModel.tableName}
+    where $!{tableModel.primaryKey.columnName} = #{$!{tableModel.primaryKey.beanName},jdbcType=$!{tableModel.primaryKey.columnType}}
+  </select>
+  
+  <select id="selectList" resultMap="BaseResultMap" parameterType="$!{tableModel.primaryKey.beanType}" >
+    select 
+    <include refid="Base_Column_List" />
+    from $!{tableModel.tableName} 
+    where 1 = 1
+#foreach($field in $tableModel.fieldList)
+#if($field.columnName != $tableModel.primaryKey.columnName)
+	  <if test="$!{field.beanName} != null" >
+        and $!{field.columnName} = #{$!{field.beanName},jdbcType=$!{field.columnType}}
+      </if>
+#end
+#end
+  </select>
+  
 </mapper>

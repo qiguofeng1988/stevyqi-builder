@@ -28,7 +28,7 @@
       <tr class="text-c">
         <td><input type="checkbox" value="$!{$!{tableModel.lowerBeanName}.$!{tableModel.primaryKey.beanName}}" name="$!{tableModel.lowerBeanName}Id"></td>
 #foreach($field in $tableModel.fieldList)
-        <td>$!{$!{tableModel.lowerBeanName}.$!{field.columnName}}</td>
+        <td>$!{$!{tableModel.lowerBeanName}.$!{field.beanName}}</td>
 #end
         <td class="f-14">
 			<a style="text-decoration:none" class="ml-5" onClick="member_show('','800','500','查看$!{tableModel.beanName}','$!{tableModel.lowerBeanName}_view.do?id=$!{$!{tableModel.lowerBeanName}.$!{tableModel.primaryKey.beanName}}')" href="javascript:;" title="查看"><i class="icon-comments-alt"></i></a>

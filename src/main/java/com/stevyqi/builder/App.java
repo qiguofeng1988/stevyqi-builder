@@ -12,8 +12,8 @@ public class App {
 
 		String tableName = "%";
 		String packageName = "com.stevyqi";
-		String savePath = "/Users/qiguofeng/Documents";
-		List<TableModel> tables = TableUtil.getTables(tableName, "gogoup_");
+		String savePath = "/Users/qiguofeng/Documents/workspace/stevy-builder/out/";
+		List<TableModel> tables = TableUtil.getTables(tableName, "stevyqi_");
 		for (TableModel tableModel : tables) {
 			System.out.println(tableModel);
 			VelocityUtil.createFiles(tableModel, packageName, savePath);

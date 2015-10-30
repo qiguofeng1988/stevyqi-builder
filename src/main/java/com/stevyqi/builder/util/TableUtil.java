@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.ibatis.type.JdbcType;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.Lists;
@@ -69,7 +70,7 @@ public class TableUtil {
 			while (colRet.next()) {
 				FieldModel fieldModel = new FieldModel();
 				columnName = colRet.getString("COLUMN_NAME");//COLUMN_NAME就是字段的名字
-				columnType = colRet.getString("TYPE_NAME");//TYPE_NAME就是数据类型
+				columnType = JdbcType.forCode(NumberUtils.toInt(colRet.getString("DATA_TYPE"))).name();//TYPE_NAME就是数据类型
 				beanName = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, columnName);
 				suffixBeanName = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, columnName);
 				beanType = BeanTypes.getValue(NumberUtils.toInt(colRet.getString("DATA_TYPE")));//TYPE_NAME来自 java.sql.Types 的 SQL 类型
