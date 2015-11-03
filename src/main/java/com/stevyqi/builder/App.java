@@ -11,9 +11,10 @@ public class App {
 	public static void main(String[] args) throws Exception {
 
 		String tableName = "%";
+		String tablePrefix = "stevyqi_";
 		String packageName = "com.stevyqi";
 		String savePath = "/Users/qiguofeng/Documents/workspace/stevy-builder/out/";
-		List<TableModel> tables = TableUtil.getTables(tableName, "stevyqi_");
+		List<TableModel> tables = TableUtil.getTables(tableName, tablePrefix);
 		for (TableModel tableModel : tables) {
 			System.out.println(tableModel);
 			VelocityUtil.createFiles(tableModel, packageName, savePath);

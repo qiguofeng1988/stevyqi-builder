@@ -112,11 +112,11 @@ public class $!{tableModel.beanName}Controller {
 			$!{tableModel.lowerBeanName}.setId($!{tableModel.primaryKey.beanName});
 			$!{tableModel.lowerBeanName}.setDeleted(DeletedType.DELETED.getKey());
 			int result = $!{tableModel.lowerBeanName}Service.update$!{tableModel.beanName}($!{tableModel.lowerBeanName});
-			logger.info("$!{tableModel.beanName}删除成功,result:{}",result);
+			logger.info("$!{tableModel.beanName} delete success,result:{}",result);
 			map.put("result",ResultType.SUCCESS.getKey());
-			map.put("msg", "$!{tableModel.beanName}删除成功");
+			map.put("msg", "$!{tableModel.beanName} delete success");
 		}catch(Exception e) {
-			logger.error(this.getClass().getName() + ": $!{tableModel.beanName}删除失败", e);
+			logger.error(this.getClass().getName() + ": $!{tableModel.beanName} delete failure", e);
 			map.put("result",ResultType.FAILURE.getKey());
 			map.put("msg",e.getMessage());
 		}
@@ -124,30 +124,4 @@ public class $!{tableModel.beanName}Controller {
 		return result;
 	}
 	
-	@RequestMapping(value = "$!{tableModel.lowerBeanName}_display", method = RequestMethod.GET)
-	@ResponseBody
-	public Object $!{tableModel.lowerBeanName}Display(@RequestParam("$!{tableModel.primaryKey.beanName}") Long $!{tableModel.primaryKey.beanName},HttpServletResponse response) {
-		Gson gson = new Gson();
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			response.setContentType("text/json;charset=UTF-8");
-			response.setHeader("Pragma", "No-cache");
-			response.setHeader("Cache-Control", "no-cache");
-			response.setDateHeader("Expires", 0);
-
-			$!{tableModel.beanName} $!{tableModel.lowerBeanName} = new $!{tableModel.beanName}();
-			$!{tableModel.lowerBeanName}.setId($!{tableModel.primaryKey.beanName});
-			$!{tableModel.lowerBeanName}.setDeleted(DeletedType.UNDELETED.getKey());
-			int result = $!{tableModel.lowerBeanName}Service.update$!{tableModel.beanName}($!{tableModel.lowerBeanName});
-			logger.info("$!{tableModel.beanName}显示成功,result:{}",result);
-			map.put("result",ResultType.SUCCESS.getKey());
-			map.put("msg", "$!{tableModel.beanName}显示成功");
-		}catch(Exception e) {
-			logger.error(this.getClass().getName() + ": $!{tableModel.beanName}显示失败", e);
-			map.put("result",ResultType.FAILURE.getKey());
-			map.put("msg",e.getMessage());
-		}
-		String result = gson.toJson(map);
-		return result;
-	}
 }

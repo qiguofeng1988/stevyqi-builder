@@ -50,7 +50,7 @@
   </insert>
   
   <delete id="delete" parameterType="$!{tableModel.primaryKey.beanType}" >
-    delete from $!{tableModel.tableName}
+    update $!{tableModel.tableName} set deleted = 1
     where $!{tableModel.primaryKey.columnName} = #{$!{tableModel.primaryKey.beanName},jdbcType=$!{tableModel.primaryKey.columnType}}
   </delete>
   
