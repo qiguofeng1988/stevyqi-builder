@@ -12,7 +12,7 @@ private $!{field.beanType} $!{field.beanName};
 	#end
 
 	#foreach($field in $tableModel.fieldList)
-public String get$!{field.suffixBeanName}() {
+public $!{field.beanType} get$!{field.suffixBeanName}() {
 		return $!{field.beanName};
 	}
 

@@ -11,8 +11,8 @@ public class App {
 	public static void main(String[] args) throws Exception {
 
 		String tableName = "%";
-		String tablePrefix = "stevyqi_";
-		String packageName = "com.stevyqi";
+		String tablePrefix = "gogoup_";
+		String packageName = "com.zcool.gogoup";
 		String savePath = "/Users/qiguofeng/Documents/workspace/stevy-builder/out/";
 		List<TableModel> tables = TableUtil.getTables(tableName, tablePrefix);
 		for (TableModel tableModel : tables) {

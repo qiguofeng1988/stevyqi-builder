@@ -23,4 +23,6 @@ public interface $!{tableModel.beanName}Mapper {
     $!{tableModel.beanName} selectOne($!{tableModel.primaryKey.beanType} $!{tableModel.primaryKey.beanName});
     
     List<$!{tableModel.beanName}> selectList($!{tableModel.beanName} $!{tableModel.lowerBeanName});
+    
+    List<$!{tableModel.beanName}> selectList();
 }
