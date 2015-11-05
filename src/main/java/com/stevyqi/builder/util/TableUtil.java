@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.ibatis.type.JdbcType;
@@ -67,6 +69,7 @@ public class TableUtil {
 			int nullable;
 			ResultSet colRet = dbmd.getColumns(null, "%", tableRet.getString("TABLE_NAME"), "%");
 			List<FieldModel> fieldList = Lists.newArrayList();
+			Set<String> importSet = new TreeSet<String>();
 			while (colRet.next()) {
 				FieldModel fieldModel = new FieldModel();
 				columnName = colRet.getString("COLUMN_NAME");//COLUMN_NAME就是字段的名字
@@ -84,12 +87,16 @@ public class TableUtil {
 				fieldModel.setBeanName(beanName);
 				fieldModel.setSuffixBeanName(suffixBeanName);
 				fieldModel.setBeanType(beanType);
+				fieldModel.setShortBeanType(beanType.substring(beanType.lastIndexOf(".")+1));
 				fieldModel.setDigits(digits);
 				fieldModel.setNullable(nullable);
 				fieldModel.setRemark(remark);
 				fieldList.add(fieldModel);
 				if(columnName.equals(primaryKey)){
 					tableModel.setPrimaryKey(fieldModel);
+				}
+				if(!beanType.startsWith("java.lang.")){
+					importSet.add(beanType);
 				}
 			}
 			tableModel.setFieldList(fieldList);

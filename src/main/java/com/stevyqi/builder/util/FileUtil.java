@@ -198,10 +198,7 @@ public class FileUtil {
 				}
 			}
 		}
-		if (!dir.delete()) {
-			return false;
-		}
-		return true;
+		return dir.delete();
 	}
 
 	/**
@@ -220,11 +217,7 @@ public class FileUtil {
 			File f = new File(sFileName);
 
 			// if (f.exists() && f.isFile() && f.canRead()) {
-			if (f.exists() && f.isFile()) {
-				result = true;
-			} else {
-				result = false;
-			}
+			result = f.exists() && f.isFile();
 		} catch (Exception e) {
 			result = false;
 		}

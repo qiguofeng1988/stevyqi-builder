@@ -9,7 +9,7 @@ public enum TemplateTypes {
 	CONTROLLER(6, "templates/controller.vm", "Controller.java", "controller"),
 	LIST_VIEW(7, "templates/listView.vm", "_list.vm", "views");
 
-	private TemplateTypes(int key, String templateFileName, String extName, String packageName) {
+	TemplateTypes(int key, String templateFileName, String extName, String packageName) {
 		this.key = key;
 		this.templateFileName = templateFileName;
 		this.extName = extName;

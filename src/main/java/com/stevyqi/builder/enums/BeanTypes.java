@@ -7,7 +7,7 @@ public enum BeanTypes {
 	LONGVARCHAR(-1, "java.lang.String"), DATE(91, "java.util.Date"), TIME(92, "java.util.Date"), TIMESTAMP(93, "java.util.Date"), 
 	BINARY(-1, "byte[]"), VARBINARY(-1, "byte[]"), LONGVARBINARY(-1, "byte[]");
 	
-	private BeanTypes(int key, java.lang.String value) {
+	BeanTypes(int key, java.lang.String value) {
 		this.key = key;
 		this.value = value;
 	}

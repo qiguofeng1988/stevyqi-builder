@@ -1,6 +1,7 @@
 package com.stevyqi.builder.model;
 
 import java.util.List;
+import java.util.Set;
 
 public class TableModel {
 
@@ -9,6 +10,7 @@ public class TableModel {
 	private String lowerBeanName;
 	private FieldModel primaryKey;
 	private List<FieldModel> fieldList;
+	private Set<String> importSet;
 
 	public String getTableName() {
 		return tableName;
@@ -50,10 +52,24 @@ public class TableModel {
 		this.fieldList = fieldList;
 	}
 
+	public Set<String> getImportSet() {
+		return importSet;
+	}
+
+	public void setImportSet(Set<String> importSet) {
+		this.importSet = importSet;
+	}
+
 	@Override
 	public String toString() {
-		return "TableModel [tableName=" + tableName + ", beanName=" + beanName + ", primaryKey=" + primaryKey
-				+ ", fieldList=" + fieldList + "]";
+		return "TableModel{" +
+				"tableName='" + tableName + '\'' +
+				", beanName='" + beanName + '\'' +
+				", lowerBeanName='" + lowerBeanName + '\'' +
+				", primaryKey=" + primaryKey +
+				", fieldList=" + fieldList +
+				", importSet=" + importSet +
+				'}';
 	}
 
 

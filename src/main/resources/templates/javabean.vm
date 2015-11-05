@@ -1,4 +1,9 @@
 package $!{beanPackageName};
+
+#foreach($field in $tableModel.importSet)
+import $!{field};
+#end
+
 /**
  * 
  * @Author stevy.builder
@@ -7,7 +12,7 @@ package $!{beanPackageName};
 public class $!{tableModel.beanName} {
 
 	#foreach($field in $tableModel.fieldList)
-private $!{field.beanType} $!{field.beanName};
+private $!{field.shortBeanType} $!{field.beanName};
 	
 	#end
 
@@ -16,7 +21,7 @@ public $!{field.beanType} get$!{field.suffixBeanName}() {
 		return $!{field.beanName};
 	}
 
-	public void set$!{field.suffixBeanName}($!{field.beanType} $!{field.beanName}) {
+	public void set$!{field.suffixBeanName}($!{field.shortBeanType} $!{field.beanName}) {
 		this.$!{field.beanName} = $!{field.beanName};
 	}
 	
