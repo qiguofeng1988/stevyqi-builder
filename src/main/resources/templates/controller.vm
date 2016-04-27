@@ -111,7 +111,7 @@ public class $!{tableModel.beanName}Controller {
 			$!{tableModel.beanName} $!{tableModel.lowerBeanName} = new $!{tableModel.beanName}();
 			$!{tableModel.lowerBeanName}.setId($!{tableModel.primaryKey.beanName});
 			$!{tableModel.lowerBeanName}.setDeleted(DeletedType.DELETED.getKey());
-			int result = $!{tableModel.lowerBeanName}Service.update($!{tableModel.lowerBeanName});
+			int result = $!{tableModel.lowerBeanName}Service.updateSelective($!{tableModel.lowerBeanName});
 			logger.info("$!{tableModel.beanName} delete success,result:{}",result);
 			map.put("result",ResultType.SUCCESS.getKey());
 			map.put("msg", "$!{tableModel.beanName} delete success");

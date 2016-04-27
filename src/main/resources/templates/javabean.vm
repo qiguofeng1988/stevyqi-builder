@@ -3,13 +3,16 @@ package $!{beanPackageName};
 #foreach($field in $tableModel.importSet)
 import $!{field};
 #end
+import java.io.Serializable;
 
 /**
  * 
  * @Author stevy.builder
  * @Create Date $!{now}
  */
-public class $!{tableModel.beanName} {
+public class $!{tableModel.beanName} implements Serializable {
+
+	private static final long serialVersionUID = -1L;
 
 	#foreach($field in $tableModel.fieldList)
 private $!{field.shortBeanType} $!{field.beanName};
@@ -17,7 +20,7 @@ private $!{field.shortBeanType} $!{field.beanName};
 	#end
 
 	#foreach($field in $tableModel.fieldList)
-public $!{field.beanType} get$!{field.suffixBeanName}() {
+public $!{field.shortBeanType} get$!{field.suffixBeanName}() {
 		return $!{field.beanName};
 	}
 
