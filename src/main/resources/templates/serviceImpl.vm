@@ -29,7 +29,7 @@ public class $!{tableModel.beanName}ServiceImpl implements $!{tableModel.beanNam
 		if(Util.isEmpty($!{tableModel.lowerBeanName})) {
 			throw new GogoUpServiceException("$!{tableModel.beanName} is null");
 		}
-		return $!{tableModel.lowerBeanName}Mapper.insert($!{tableModel.lowerBeanName});
+		return $!{tableModel.lowerBeanName}Mapper.insertSelective($!{tableModel.lowerBeanName});
 	}
 	
 	public $!{tableModel.beanName} get$!{tableModel.beanName}($!{tableModel.primaryKey.beanType} $!{tableModel.primaryKey.beanName}){
@@ -68,6 +68,13 @@ public class $!{tableModel.beanName}ServiceImpl implements $!{tableModel.beanNam
 			throw new GogoUpServiceException("$!{tableModel.beanName} is null");
 		}
 		return $!{tableModel.lowerBeanName}Mapper.update($!{tableModel.lowerBeanName});
+	}
+	
+	public int updateSelective($!{tableModel.beanName} $!{tableModel.lowerBeanName}) {
+		if(Util.isEmpty($!{tableModel.lowerBeanName})) {
+			throw new GogoUpServiceException("$!{tableModel.beanName} is null");
+		}
+		return $!{tableModel.lowerBeanName}Mapper.updateSelective($!{tableModel.lowerBeanName});
 	}
 	
 	public int delete($!{tableModel.primaryKey.beanType} $!{tableModel.primaryKey.beanName}) {
