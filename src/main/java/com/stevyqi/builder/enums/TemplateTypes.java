@@ -4,9 +4,9 @@ public enum TemplateTypes {
 	JAVABEAN(1, "templates/javabean.vm", ".java", "model"),
 	DAO(2, "templates/dao.vm", "Mapper.java", "dao"),
 	MYBAITIS_XML(3, "templates/mybaitisXml.vm", "Mapper.xml", "mapper"),
-	SERVICE(4, "templates/service.vm", "Service.java", "service"),
-	SERVICE_IMPL(5, "templates/serviceImpl.vm", "ServiceImpl.java", "service.impl"),
-	CONTROLLER(6, "templates/controller.vm", "Controller.java", "controller"),
+	SERVICE(4, "templates/service.vm", "Service.java", "biz"),
+	SERVICE_IMPL(5, "templates/serviceImpl.vm", "ServiceImpl.java", "biz.impl"),
+	CONTROLLER(6, "templates/controller.vm", "Controller.java", "controller.admin"),
 	LIST_VIEW(7, "templates/listView.vm", "_list.vm", "views");
 
 	TemplateTypes(int key, String templateFileName, String extName, String packageName) {

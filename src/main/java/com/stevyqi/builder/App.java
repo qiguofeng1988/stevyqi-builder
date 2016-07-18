@@ -13,7 +13,7 @@ public class App {
 		String tableName = "%";
 		String tablePrefix = "gogoup_";
 		String packageName = "com.zcool.gogoup";
-		String savePath = App.class.getClassLoader().getResource("").getPath() + "/out/";
+		String savePath = App.class.getClassLoader().getResource("").getPath() + "out/";
 		List<TableModel> tables = TableUtil.getTables(tableName, tablePrefix);
 		for (TableModel tableModel : tables) {
 			System.out.println(tableModel);

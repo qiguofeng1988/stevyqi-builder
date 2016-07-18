@@ -100,6 +100,7 @@ public class TableUtil {
 				}
 			}
 			tableModel.setFieldList(fieldList);
+			tableModel.setImportSet(importSet);
 			tableList.add(tableModel);
 		}
 		return tableList;

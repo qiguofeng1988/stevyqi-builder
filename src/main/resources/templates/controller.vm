@@ -23,13 +23,18 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.util.DataFormat;
+import $!{packageName}.exception.GogoUpServiceException;
 import $!{packageName}.Page;
 import $!{packageName}.biz.$!{tableModel.beanName}Service;
 import $!{packageName}.enums.DeletedType;
 import $!{packageName}.enums.ResultType;
 import $!{packageName}.model.$!{tableModel.beanName};
 import $!{packageName}.util.Util;
+import $!{packageName}.util.TimeUtil;
 
+#foreach($field in $tableModel.importSet)
+import $!{field};
+#end
 
 /**
  * 
@@ -43,26 +48,6 @@ public class $!{tableModel.beanName}Controller {
 	
 	@Autowired
 	private $!{tableModel.beanName}Service $!{tableModel.lowerBeanName}Service;
-	
-	@RequestMapping(value = "$!{tableModel.lowerBeanName}_search")
-	public String search(HttpServletRequest request,Model model) {
-		List<$!{tableModel.beanName}> list = Lists.newArrayList();
-		Page page = new Page(1,10);
-		try{
-			String pageNum = DataFormat.filterHtmlEncode(request.getParameter("pageNum"));
-			if(!Util.isEmpty(pageNum)) {
-				page = new Page(NumberUtils.toInt(pageNum),10);
-			}
-			$!{tableModel.beanName} $!{tableModel.lowerBeanName}Search = new $!{tableModel.beanName}();
-			list = $!{tableModel.lowerBeanName}Service.getList($!{tableModel.lowerBeanName}Search , page);
-			model.addAttribute("list", list);
-			model.addAttribute("page", new PageInfo<$!{tableModel.beanName}>(list));
-		}catch(Exception e) {
-			logger.error(this.getClass().getName(),e);
-		}
-		
-		return "admin/$!{tableModel.lowerBeanName}/$!{tableModel.lowerBeanName}_list";
-	}
 
 	@RequestMapping(value = "$!{tableModel.lowerBeanName}")
 	public String list(HttpServletRequest request,Model model) {
@@ -84,10 +69,9 @@ public class $!{tableModel.beanName}Controller {
 	}
 	
 	@RequestMapping(value = "$!{tableModel.lowerBeanName}_view")
-	public String $!{tableModel.lowerBeanName}View(HttpServletRequest request,Model model) {
+	public String $!{tableModel.lowerBeanName}View(@RequestParam("id") Long id,HttpServletRequest request,Model model) {
 		try{
-			String $!{tableModel.primaryKey.beanName} = DataFormat.filterHtmlEncode(request.getParameter("$!{tableModel.primaryKey.beanName}"));
-			$!{tableModel.beanName} $!{tableModel.lowerBeanName} = $!{tableModel.lowerBeanName}Service.get$!{tableModel.beanName}(NumberUtils.toLong($!{tableModel.primaryKey.beanName}));
+			$!{tableModel.beanName} $!{tableModel.lowerBeanName} = $!{tableModel.lowerBeanName}Service.get$!{tableModel.beanName}($!{tableModel.primaryKey.beanName});
 			model.addAttribute("$!{tableModel.lowerBeanName}", $!{tableModel.lowerBeanName});
 		}catch(Exception e) {
 			logger.error(this.getClass().getName(),e);
@@ -96,6 +80,135 @@ public class $!{tableModel.beanName}Controller {
 		return "admin/$!{tableModel.lowerBeanName}/$!{tableModel.lowerBeanName}_view";
 	}
 
+	
+	@RequestMapping(value = "$!{tableModel.lowerBeanName}_toadd")
+	public String $!{tableModel.lowerBeanName}2Add(HttpServletRequest request,Model model) {
+		try{
+
+		}catch(Exception e) {
+			logger.error(this.getClass().getName(),e);
+		}
+		
+		return "admin/$!{tableModel.lowerBeanName}/$!{tableModel.lowerBeanName}_add";
+	}
+	
+	
+	@RequestMapping(value = "$!{tableModel.lowerBeanName}_toedit")
+	public String $!{tableModel.lowerBeanName}2Edit(@RequestParam("id") Long id,HttpServletRequest request,Model model) {
+		try{
+			$!{tableModel.beanName} $!{tableModel.lowerBeanName} = $!{tableModel.lowerBeanName}Service.get$!{tableModel.beanName}(id);
+			model.addAttribute("$!{tableModel.lowerBeanName}", $!{tableModel.lowerBeanName});
+		}catch(Exception e) {
+			logger.error(this.getClass().getName(),e);
+		}
+		
+		return "admin/$!{tableModel.lowerBeanName}/$!{tableModel.lowerBeanName}_edit";
+	}
+	
+	
+	@RequestMapping(value = "$!{tableModel.lowerBeanName}_save", method = RequestMethod.POST)
+	@ResponseBody
+	public Object $!{tableModel.lowerBeanName}Save(HttpServletRequest request,HttpServletResponse response) {
+		Gson gson = new Gson();
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			response.setContentType("text/json;charset=UTF-8");
+			response.setHeader("Pragma", "No-cache");
+			response.setHeader("Cache-Control", "no-cache");
+			response.setDateHeader("Expires", 0);
+
+#foreach($field in $tableModel.fieldList)
+#if($!{field.beanName} != "id" && $!{field.beanName} != "createTime" && $!{field.beanName} != "deleted")
+			String $!{field.beanName} = DataFormat.filterHtmlEncode(request.getParameter("$!{field.beanName}"));
+#end
+#end
+			
+#foreach($field in $tableModel.fieldList)
+#if($!{field.beanName} != "id" && $!{field.beanName} != "createTime" && $!{field.beanName} != "deleted")
+			if(Util.isEmpty($!{field.beanName})) {
+				throw new GogoUpServiceException("$!{field.remark}不允许为空");
+			}
+#end
+#end
+
+			$!{tableModel.beanName} $!{tableModel.lowerBeanName} = new $!{tableModel.beanName}();	
+#foreach($field in $tableModel.fieldList)
+#if($!{field.beanName} != "id" && $!{field.beanName} != "createTime" && $!{field.beanName} != "deleted")
+#if($field.beanType =="java.lang.Integer")
+			$!{tableModel.lowerBeanName}.set$!{field.suffixBeanName}(NumberUtils.toInt($!{field.beanName}));
+#elseif($field.beanType =="java.lang.Long")
+			$!{tableModel.lowerBeanName}.set$!{field.suffixBeanName}(NumberUtils.toLong($!{field.beanName}));
+#elseif($field.beanType =="java.util.Date")
+			$!{tableModel.lowerBeanName}.set$!{field.suffixBeanName}(TimeUtil.parseDateTime($!{field.beanName}, TimeUtil.DATETIME2));
+#else
+			$!{tableModel.lowerBeanName}.set$!{field.suffixBeanName}($!{field.beanName});
+#end
+#end
+#end
+			int result = $!{tableModel.lowerBeanName}Service.add$!{tableModel.beanName}($!{tableModel.lowerBeanName});
+			logger.info("$!{tableModel.beanName} add success,result:{}",result);
+			map.put("result",ResultType.SUCCESS.getKey());
+			map.put("msg", "$!{tableModel.beanName} add success");
+		}catch(Exception e) {
+			logger.error(this.getClass().getName() + ": $!{tableModel.beanName} add failure", e);
+			map.put("result",ResultType.FAILURE.getKey());
+			map.put("msg",e.getMessage());
+		}
+		String result = gson.toJson(map);
+		return result;
+	}
+	
+	@RequestMapping(value = "$!{tableModel.lowerBeanName}_update", method = RequestMethod.POST)
+	@ResponseBody
+	public Object $!{tableModel.lowerBeanName}Update(@RequestParam("id") Long id,HttpServletRequest request,HttpServletResponse response) {
+		Gson gson = new Gson();
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			response.setContentType("text/json;charset=UTF-8");
+			response.setHeader("Pragma", "No-cache");
+			response.setHeader("Cache-Control", "no-cache");
+			response.setDateHeader("Expires", 0);
+
+#foreach($field in $tableModel.fieldList)
+#if($!{field.beanName} != "id" && $!{field.beanName} != "createTime" && $!{field.beanName} != "deleted")
+			String $!{field.beanName} = DataFormat.filterHtmlEncode(request.getParameter("$!{field.beanName}"));
+#end
+#end
+			
+#foreach($field in $tableModel.fieldList)
+#if($!{field.beanName} != "id" && $!{field.beanName} != "createTime" && $!{field.beanName} != "deleted")
+			if(Util.isEmpty($!{field.beanName})) {
+				throw new GogoUpServiceException("$!{field.remark}不允许为空");
+			}
+#end
+#end		
+
+			$!{tableModel.beanName} $!{tableModel.lowerBeanName} = $!{tableModel.lowerBeanName}Service.get$!{tableModel.beanName}(id);	
+#foreach($field in $tableModel.fieldList)
+#if($!{field.beanName} != "id" && $!{field.beanName} != "createTime" && $!{field.beanName} != "deleted")
+#if($field.beanType =="java.lang.Integer")
+			$!{tableModel.lowerBeanName}.set$!{field.suffixBeanName}(NumberUtils.toInt($!{field.beanName}));
+#elseif($field.beanType =="java.lang.Long")
+			$!{tableModel.lowerBeanName}.set$!{field.suffixBeanName}(NumberUtils.toLong($!{field.beanName}));
+#elseif($field.beanType =="java.util.Date")
+			$!{tableModel.lowerBeanName}.set$!{field.suffixBeanName}(TimeUtil.parseDateTime($!{field.beanName}, TimeUtil.DATETIME2));
+#else
+			$!{tableModel.lowerBeanName}.set$!{field.suffixBeanName}($!{field.beanName});
+#end
+#end
+#end
+			int result = $!{tableModel.lowerBeanName}Service.update($!{tableModel.lowerBeanName});
+			logger.info("$!{tableModel.beanName} update success,result:{}",result);
+			map.put("result",ResultType.SUCCESS.getKey());
+			map.put("msg", "$!{tableModel.beanName} update success");
+		}catch(Exception e) {
+			logger.error(this.getClass().getName() + ": $!{tableModel.beanName} update failure", e);
+			map.put("result",ResultType.FAILURE.getKey());
+			map.put("msg",e.getMessage());
+		}
+		String result = gson.toJson(map);
+		return result;
+	}
 
 	@RequestMapping(value = "$!{tableModel.lowerBeanName}_del", method = RequestMethod.GET)
 	@ResponseBody
@@ -111,7 +224,7 @@ public class $!{tableModel.beanName}Controller {
 			$!{tableModel.beanName} $!{tableModel.lowerBeanName} = new $!{tableModel.beanName}();
 			$!{tableModel.lowerBeanName}.setId($!{tableModel.primaryKey.beanName});
 			$!{tableModel.lowerBeanName}.setDeleted(DeletedType.DELETED.getKey());
-			int result = $!{tableModel.lowerBeanName}Service.update($!{tableModel.lowerBeanName});
+			int result = $!{tableModel.lowerBeanName}Service.updateSelective($!{tableModel.lowerBeanName});
 			logger.info("$!{tableModel.beanName} delete success,result:{}",result);
 			map.put("result",ResultType.SUCCESS.getKey());
 			map.put("msg", "$!{tableModel.beanName} delete success");
